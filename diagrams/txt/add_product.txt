@@ -1,0 +1,5 @@
+Website -> Catalog: Create Product
+Catalog->Stock: Add current stock
+Stock->Catalog: Stock added
+Note over Catalog: Retrieve Product
+Catalog->Website: Product Details

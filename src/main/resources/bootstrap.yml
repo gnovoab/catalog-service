@@ -1,0 +1,26 @@
+info:
+  description: Catalog Service
+
+spring:
+  application:
+    name: catalog-service
+    version: 1.0
+
+
+  cloud:
+    config:
+      uri:  http://config-server.common.svc.cluster.local/
+
+---
+
+spring:
+  profiles: default, native, unitTest, integrationTest
+
+  cloud:
+    config:
+      uri: http://localhost:8888
+      fail-fast: true
+      retry:
+        max-attempts: 50
+        initial-interval: 1500
+        multiplier: 2

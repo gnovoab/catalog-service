@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-service
+  namespace: common
+  labels:
+    app: catalog-service
+spec:
+  selector:
+    matchLabels:
+      app: catalog-service
+  template:
+    metadata:
+      labels:
+        app: catalog-service
+    spec:
+      containers:
+        - name: catalog-service
+          image: gnovoab/catalog-service:latest
+          imagePullPolicy: Always
+
+          resources:
+            requests:
+              cpu: 200m
+              memory: 300Mi
+            limits:
+              cpu: 800m
+              memory: 700Mi
+
+
+
+          env:
+            - name: GET_HOSTS_FROM
+              value: dns
+            - name: SPRING_PROFILES_ACTIVE
+              value: dev
+
+      imagePullSecrets:
+        - name: regcred
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog-service
+  namespace: common
+spec:
+  type: ClusterIP
+  selector:
+    app: catalog-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8761
