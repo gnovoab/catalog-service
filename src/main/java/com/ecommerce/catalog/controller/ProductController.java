@@ -8,6 +8,7 @@ import com.ecommerce.catalog.domain.api.ApiErrorResponse;
 import com.ecommerce.catalog.domain.api.ApiMessageResponse;
 import com.ecommerce.catalog.domain.model.Product;
 import com.ecommerce.catalog.service.ProductService;
+import com.ecommerce.catalog.service.StockService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,6 +35,9 @@ public class ProductController {
     //Fields
     @Autowired
     private transient ProductService productService;
+
+    @Autowired
+    private transient StockService stockService;
 
 
     /**
@@ -94,6 +98,8 @@ public class ProductController {
         //Retrieve a product
         Product product = productService.findProduct(id);
 
+
+
         //Return the product requested
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
@@ -115,6 +121,9 @@ public class ProductController {
 
         //Create product
         Product productCreated = productService.save(product);
+
+        //Update stock
+        stockService.createProductStock(productCreated);
 
         //Return the product created
         return new ResponseEntity<>(productCreated, HttpStatus.CREATED);

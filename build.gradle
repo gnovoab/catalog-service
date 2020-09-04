@@ -91,6 +91,13 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+    //Retry
+    implementation 'org.springframework.retry:spring-retry'
+
+    // Feign & Hystrix
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
+
     //Web
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
