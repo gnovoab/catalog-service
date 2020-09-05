@@ -4,8 +4,8 @@ package com.ecommerce.catalog.service;
 
 //Imports
 import com.ecommerce.catalog.client.StockClient;
-import com.ecommerce.catalog.domain.rest.CreateProductStockRequest;
-import com.ecommerce.catalog.domain.rest.CreateProductStockResponse;
+import com.ecommerce.catalog.domain.rest.stock.CreateProductStockRequest;
+import com.ecommerce.catalog.domain.rest.stock.CreateProductStockResponse;
 import com.ecommerce.catalog.factory.ObjectFactory;
 import com.ecommerce.catalog.service.impl.StockServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -47,7 +47,7 @@ public class StockServiceTest {
         Mockito.doReturn(createProductStockResponse).when(stockClient).createProductStock(Mockito.any(CreateProductStockRequest.class));
 
         //Execute
-        stockService.createProductStock(ObjectFactory.generateSampleProduct());
+        stockService.createProductStock(ObjectFactory.generateSampleProduct(), 5);
 
         //Verify
         Mockito.verify(stockClient, Mockito.times(1)).createProductStock(Mockito.any(CreateProductStockRequest.class));

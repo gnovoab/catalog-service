@@ -1,16 +1,14 @@
 
 //Namespace
-package com.ecommerce.catalog.domain.rest;
+package com.ecommerce.catalog.domain.rest.stock;
 
 /**
  * Class that represents the payload request for AddStockProduct
  */
-public class CreateProductStockRequest {
+public class CreateProductStockResponse {
     private Long productId;
     private Integer quantity;
 
-
-    //Getters and Setters
     public Long getProductId() {
         return productId;
     }

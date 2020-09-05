@@ -7,6 +7,7 @@ package com.ecommerce.catalog.controller;
 import com.ecommerce.catalog.domain.api.ApiErrorResponse;
 import com.ecommerce.catalog.domain.api.ApiMessageResponse;
 import com.ecommerce.catalog.domain.model.Product;
+import com.ecommerce.catalog.domain.rest.product.CreateProductRequest;
 import com.ecommerce.catalog.service.ProductService;
 import com.ecommerce.catalog.service.StockService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -117,13 +118,13 @@ public class ProductController {
             @ApiResponse(responseCode = "500", description = "The service encountered a problem.", content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Product> createProduct(@RequestBody @Valid Product product) {
+    public ResponseEntity<Product> createProduct(@RequestBody @Valid CreateProductRequest productRequest) {
 
         //Create product
-        Product productCreated = productService.save(product);
+        Product productCreated = productService.save(productRequest.getProduct());
 
         //Update stock
-        stockService.createProductStock(productCreated);
+        stockService.createProductStock(productCreated, productRequest.getQuantity());
 
         //Return the product created
         return new ResponseEntity<>(productCreated, HttpStatus.CREATED);
@@ -143,13 +144,17 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable @Valid Long id, @RequestBody @Valid Product product) {
 
-        //Assign Id
-        product.setId(id);
+        Product dbProduct = productService.findProduct(id);
+
+        //Assign fixed data
+        product.setId(dbProduct.getId());
+        product.setSku(dbProduct.getSku());
+        product.setUuid(dbProduct.getUuid());
 
         //Update product
         Product productUpdated = productService.save(product);
 
-        //Return the product ypdated
+        //Return the product updated
         return new ResponseEntity<>(productUpdated, HttpStatus.OK);
     }
 

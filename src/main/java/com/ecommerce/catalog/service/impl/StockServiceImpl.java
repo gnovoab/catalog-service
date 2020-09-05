@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ecommerce.catalog.client.StockClient;
 import com.ecommerce.catalog.domain.model.Product;
-import com.ecommerce.catalog.domain.rest.CreateProductStockRequest;
-import com.ecommerce.catalog.domain.rest.CreateProductStockResponse;
+import com.ecommerce.catalog.domain.rest.stock.CreateProductStockRequest;
+import com.ecommerce.catalog.domain.rest.stock.CreateProductStockResponse;
 import com.ecommerce.catalog.service.StockService;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +36,17 @@ public class StockServiceImpl implements StockService {
     /**
      * Create product stock
      * @param product
+     * @param quantity
      * @return
      */
     @Retryable(value = {FeignException.class, RuntimeException.class}, maxAttempts = 3, backoff = @Backoff(delay = 5000))
     @Override
-    public CreateProductStockResponse createProductStock(Product product) {
+    public CreateProductStockResponse createProductStock(Product product, Integer quantity) {
 
         //Create payload
         CreateProductStockRequest productStockRequestPayload = new CreateProductStockRequest();
         productStockRequestPayload.setProductId(product.getId());
-        productStockRequestPayload.setQuantity(0);
+        productStockRequestPayload.setQuantity(quantity);
 
         //Update stock
         return stockClient.createProductStock(productStockRequestPayload);

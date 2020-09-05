@@ -3,8 +3,8 @@
 package com.ecommerce.catalog.client;
 
 // imports
-import com.ecommerce.catalog.domain.rest.CreateProductStockRequest;
-import com.ecommerce.catalog.domain.rest.CreateProductStockResponse;
+import com.ecommerce.catalog.domain.rest.stock.CreateProductStockRequest;
+import com.ecommerce.catalog.domain.rest.stock.CreateProductStockResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
