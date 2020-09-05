@@ -5,7 +5,7 @@ package com.ecommerce.catalog.controller.product;
 //Imports
 import com.ecommerce.catalog.domain.model.Product;
 import com.ecommerce.catalog.exception.ResourceNotFoundException;
-import com.ecommerce.catalog.factory.ProductFactory;
+import com.ecommerce.catalog.factory.ObjectFactory;
 import com.ecommerce.catalog.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,10 +36,10 @@ public class UpdateProductEndpoint {
     @Test
     void updateProductOk() {
         //Prepopulate DB
-        Product originalProduct = productRepository.save(ProductFactory.getSampleProduct());
+        Product originalProduct = productRepository.save(ObjectFactory.generateSampleProduct());
 
         //Create payload
-        Product productPayload = ProductFactory.getSampleProduct();
+        Product productPayload = ObjectFactory.generateSampleProduct();
         productPayload.setPicture("");
         productPayload.setActive(false);
 
@@ -73,7 +73,7 @@ public class UpdateProductEndpoint {
     @Test
     void updateProductWrongPayload() {
         //Create payload
-        Product productPayload = ProductFactory.getSampleProduct();
+        Product productPayload = ObjectFactory.generateSampleProduct();
         productPayload.setName(null);
         productPayload.setPrice(null);
 

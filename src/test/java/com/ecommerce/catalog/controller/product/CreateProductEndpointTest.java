@@ -6,7 +6,7 @@ package com.ecommerce.catalog.controller.product;
 //Imports
 import com.ecommerce.catalog.domain.model.Product;
 import com.ecommerce.catalog.domain.rest.CreateProductStockResponse;
-import com.ecommerce.catalog.factory.ProductFactory;
+import com.ecommerce.catalog.factory.ObjectFactory;
 import com.ecommerce.catalog.service.StockService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ public class CreateProductEndpointTest {
     @Test
     void saveProductOkTest() {
         //Create payload
-        Product productPayload = ProductFactory.getSampleProduct();
+        Product productPayload = ObjectFactory.generateSampleProduct();
 
         //Set the headers
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -67,13 +67,13 @@ public class CreateProductEndpointTest {
         //Verify
         Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
         Assertions.assertTrue(response.getBody().getName().length() > 0);
-        Assertions.assertTrue(response.getBody().getPrice() > 0);
+        Assertions.assertTrue(response.getBody().getPrice().doubleValue() > 0);
     }
 
     @Test
     void wrongPayload() {
         //Create payload
-        Product productPayload = ProductFactory.getSampleProduct();
+        Product productPayload = ObjectFactory.generateSampleProduct();
         productPayload.setName(null);
 
         //Set the headers

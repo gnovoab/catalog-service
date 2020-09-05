@@ -4,10 +4,10 @@ package com.ecommerce.catalog.domain.model;
 
 //Imports
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.UUID;
 
 @Entity
 public class Product {
@@ -17,6 +17,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private UUID uuid;
+
     @Size(min = 2, max = 14)
     @Column(unique = true, updatable = false)
     private String sku;
@@ -25,14 +28,31 @@ public class Product {
     @Basic(optional = false)
     private String name;
 
-    @Min(1)
     @NotNull
-    private Double price;
+    @DecimalMin(value = "0.0", inclusive = false)
+    private BigDecimal price;
 
     private String picture;
     private Boolean active = true;
 
 
+    @Column(name = "created_date", nullable = false, updatable = false)
+    private Date createdDate;
+
+    @Column(name = "last_modified")
+    private Date lastModified;
+
+
+    @PrePersist
+    public void prePersist() {
+        this.createdDate = new Date();
+        this.uuid = UUID.randomUUID();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.lastModified = new Date();
+    }
 
     //Getters and Setters
 
@@ -53,13 +73,6 @@ public class Product {
         this.name = name;
     }
 
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
 
     public String getSku() {
         return sku;
@@ -83,5 +96,48 @@ public class Product {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Date getCreatedDate() {
+        if (this.createdDate == null) {
+            return null;
+        }
+        return new Date(this.createdDate.getTime());
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        if (createdDate != null) {
+            this.createdDate = new Date(createdDate.getTime());
+        }
+    }
+
+    public Date getLastModified() {
+        if (this.lastModified == null) {
+            return null;
+        }
+        return new Date(this.lastModified.getTime());
+    }
+
+    public void setLastModified(Date lastModified) {
+
+        if (lastModified != null) {
+            this.lastModified = new Date(lastModified.getTime());
+        }
     }
 }

@@ -4,7 +4,7 @@ package com.ecommerce.catalog.controller.product;
 
 //Imports
 import com.ecommerce.catalog.domain.model.Product;
-import com.ecommerce.catalog.factory.ProductFactory;
+import com.ecommerce.catalog.factory.ObjectFactory;
 import com.ecommerce.catalog.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -62,8 +62,8 @@ public class FetchProductsEndpointTest {
         long totalProductsInitial = productRepository.count();
 
         //Prepopulate DB
-        Product product1 = ProductFactory.getSampleProduct();
-        Product product2 = ProductFactory.getSampleProduct();
+        Product product1 = ObjectFactory.generateSampleProduct();
+        Product product2 = ObjectFactory.generateSampleProduct();
         product2.setActive(false);
 
         productRepository.save(product1);
@@ -89,7 +89,7 @@ public class FetchProductsEndpointTest {
     @Test
     void fetchProduct() {
         //Prepopulate DB
-        Product dbProduct = productRepository.save(ProductFactory.getSampleProduct());
+        Product dbProduct = productRepository.save(ObjectFactory.generateSampleProduct());
 
         //Set the headers
         HttpHeaders requestHeaders = new HttpHeaders();
@@ -107,7 +107,7 @@ public class FetchProductsEndpointTest {
         Assertions.assertNotNull(response.getBody());
         Assertions.assertEquals(dbProduct.getId(), response.getBody().getId());
         Assertions.assertEquals(dbProduct.getName(), response.getBody().getName());
-        Assertions.assertEquals(dbProduct.getPrice(), response.getBody().getPrice());
+        Assertions.assertEquals(dbProduct.getPrice().doubleValue(), response.getBody().getPrice().doubleValue());
         Assertions.assertEquals(dbProduct.getPicture(), response.getBody().getPicture());
         Assertions.assertEquals(dbProduct.getActive(), response.getBody().getActive());
     }

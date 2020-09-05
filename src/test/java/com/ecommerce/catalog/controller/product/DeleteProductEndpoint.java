@@ -4,7 +4,7 @@ package com.ecommerce.catalog.controller.product;
 
 //Imports
 import com.ecommerce.catalog.domain.model.Product;
-import com.ecommerce.catalog.factory.ProductFactory;
+import com.ecommerce.catalog.factory.ObjectFactory;
 import com.ecommerce.catalog.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ public class DeleteProductEndpoint {
     @Test
     void deleteProductOk() {
         //Prepopulate DB
-        Product originalProduct = productRepository.save(ProductFactory.getSampleProduct());
+        Product originalProduct = productRepository.save(ObjectFactory.generateSampleProduct());
 
         //Set the headers
         HttpHeaders requestHeaders = new HttpHeaders();
